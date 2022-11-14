@@ -1,0 +1,16 @@
+{
+  "name": "city-bus-tracking-api",
+  "version": "1.0.0",
+  "description": "APIs for city bus tracking",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "keywords": [],
+  "author": "thairyo",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
