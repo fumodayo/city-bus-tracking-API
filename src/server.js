@@ -1,15 +1,27 @@
 import express from 'express'
 import { connectDB } from './config/mongodb'
 import { env } from '*/config/environment'
+import { BusRoutesModel } from './models/busroutes.model'
 
-const app = express()
+connectDB()
+  .then(() => console.log('Connected successfully to database server'))
+  .then(() => bootServer())
+  .catch(error => {
+    console.log(error)
+    process.exit(1)
+  })
 
-connectDB().catch(console.log)
+const bootServer = () => {
+  const app = express()
 
-app.get('/', (req, res) => {
-  res.end('<h1>Hello word</h1>')
-})
+  app.get('/', async (req, res) => {
+    // let fakeData = []
+    await BusRoutesModel.createNew(fakeData)
 
-app.listen(env.PORT, env.HOST, () => {
-  console.log(`Hello ryo, i am running ${env.PORT}`)
-})
+    res.end('<h1>Hello word</h1>')
+  })
+
+  app.listen(env.APP_PORT, env.APP_HOST, () => {
+    console.log(`Hello ryo, i am running ${env.APP_PORT}`)
+  })
+}
