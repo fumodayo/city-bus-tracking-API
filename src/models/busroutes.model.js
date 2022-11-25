@@ -7,9 +7,9 @@ const busRoutesCollectionSchema = Joi.object({
   codeBusRoute: Joi.string().required().min(1),
   nameRoute: Joi.string().required().min(1),
   directionRoute: Joi.string().required().min(1),
-  drivingJourney: Joi.string().required().min(1),
-  lineDistance: Joi.string().required().min(1),
-  operatingTime: Joi.string().required().min(1),
+  drivingJourney: Joi.string().min(1),
+  lineDistance: Joi.string().min(1),
+  operatingTime: Joi.string().min(1),
   colorRoute: Joi.string().required().min(1).max(12),
   createdAt: Joi.date().timestamp().default(Date.now()),
   updatedAt: Joi.date().timestamp().default(null),
@@ -30,7 +30,7 @@ const createNew = async data => {
       .insertOne(value)
     console.log(result)
   } catch (error) {
-    console.log(error)
+     throw new Error(error)
   }
 }
 
