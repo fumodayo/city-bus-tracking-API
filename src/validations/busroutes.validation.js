@@ -3,10 +3,10 @@ import { HttpStatusCode } from '../utilities/constants'
 
 const createNew = async (req, res, next) => {
   const condition = Joi.object({
-    codeBusRoute: Joi.string().required().min(1),
-    nameRoute: Joi.string().required().min(1),
-    directionRoute: Joi.string().required().min(1),
-    colorRoute: Joi.string().required().min(1).max(12)
+    codeBusRoute: Joi.string().required().trim(),
+    nameRoute: Joi.string().required().trim(),
+    directionRoute: Joi.string().required().trim(),
+    colorRoute: Joi.string().required().trim()
   })
   try {
     await condition.validateAsync(req.body, { abortEarly: false })

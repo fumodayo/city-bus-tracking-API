@@ -4,13 +4,13 @@ import { getDB } from '../config/mongodb'
 // Define BusStop collection
 const busStopCollectionName = 'busstops'
 const busStopCollectionSchema = Joi.object({
-  codeBusRoute: Joi.string().required().min(1),
-  nameBusStop: Joi.string().required().min(1),
-  directionRoute: Joi.string().required().min(1),
+  codeBusRoute: Joi.string().required().trim(),
+  nameBusStop: Joi.string().required().trim(),
+  directionRoute: Joi.string().required().trim(),
   travelTime: Joi.number().integer().min(0),
   location: Joi.object().keys({
-    lng: Joi.string().required().min(1),
-    lat: Joi.string().required().min(1)
+    lng: Joi.string().required(),
+    lat: Joi.string().required()
   }),
   createdAt: Joi.date().timestamp().default(Date.now()),
   updatedAt: Joi.date().timestamp().default(null),
@@ -29,7 +29,7 @@ const createNew = async data => {
     const result = await getDB()
       .collection(busStopCollectionName)
       .insertOne(value)
-    console.log(result)
+    return result
   } catch (error) {
     console.log(error)
   }

@@ -4,9 +4,9 @@ import { getDB } from '../config/mongodb'
 // Define Bus Routes collection
 const roadRouteCollectionName = 'roadroutes'
 const roadRouteCollectionSchema = Joi.object({
-  codeBusRoute: Joi.string().required().min(1),
-  directionRoute: Joi.string().required().min(1),
-  colorRoute: Joi.string().required().min(1),
+  codeBusRoute: Joi.string().required().trim(),
+  directionRoute: Joi.string().required().trim(),
+  colorRoute: Joi.string().required().trim(),
   lineRoute: Joi.array().items(Joi.array()).required(),
   createdAt: Joi.date().timestamp().default(Date.now()),
   updatedAt: Joi.date().timestamp().default(null),
@@ -25,7 +25,7 @@ const createNew = async data => {
     const result = await getDB()
       .collection(roadRouteCollectionName)
       .insertOne(value)
-    console.log(result)
+    return result
   } catch (error) {
     console.log(error)
   }

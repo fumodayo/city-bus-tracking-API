@@ -4,13 +4,13 @@ import { getDB } from '../config/mongodb'
 // Define Bus Routes collection
 const busRoutesCollectionName = 'busroutes'
 const busRoutesCollectionSchema = Joi.object({
-  codeBusRoute: Joi.string().required().min(1),
-  nameRoute: Joi.string().required().min(1),
-  directionRoute: Joi.string().required().min(1),
-  drivingJourney: Joi.string().min(1),
-  lineDistance: Joi.string().min(1),
-  operatingTime: Joi.string().min(1),
-  colorRoute: Joi.string().required().min(1).max(12),
+  codeBusRoute: Joi.string().required().trim(),
+  nameRoute: Joi.string().required().trim(),
+  directionRoute: Joi.string().required().trim(),
+  colorRoute: Joi.string().required().trim(),
+  drivingJourney: Joi.string(),
+  lineDistance: Joi.string(),
+  operatingTime: Joi.string(),
   createdAt: Joi.date().timestamp().default(Date.now()),
   updatedAt: Joi.date().timestamp().default(null),
   _destroy: Joi.boolean().default(false)
@@ -28,10 +28,19 @@ const createNew = async data => {
     const result = await getDB()
       .collection(busRoutesCollectionName)
       .insertOne(value)
-    console.log(result)
+    return result
   } catch (error) {
-     throw new Error(error)
+    throw new Error(error)
   }
 }
 
-export const BusRoutesModel = { createNew }
+const getFullBusRoutes = async () => {
+  try {
+    const result = await getDB().collection(busRoutesCollectionName).find().toArray()
+    return result || {}
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+export const BusRoutesModel = { createNew, getFullBusRoutes }

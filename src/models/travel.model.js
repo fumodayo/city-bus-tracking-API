@@ -4,16 +4,16 @@ import { getDB } from '../config/mongodb'
 // Define travel collection
 const travelCollectionName = 'travels'
 const travelCollectionSchema = Joi.object({
-  title: Joi.string().required().min(1),
-  typeLocation: Joi.string().required().min(1),
-  image: Joi.string().required().min(1),
-  imageDesc: Joi.string().required().min(1),
-  description: Joi.string().required().min(1),
-  locationLink:Joi.string().required().min(1),
-  locationName:Joi.string().required().min(1),
+  title: Joi.string().required().trim(),
+  typeLocation: Joi.string().required().trim(),
+  image: Joi.string().required().trim(),
+  imageDesc: Joi.string().required().trim(),
+  description: Joi.string().required().trim(),
+  locationLink: Joi.string().required().trim(),
+  locationName: Joi.string().required().trim(),
   location: Joi.object().keys({
-    lng: Joi.string().required().min(1),
-    lat: Joi.string().required().min(1)
+    lng: Joi.string().required(),
+    lat: Joi.string().required()
   }),
   createdAt: Joi.date().timestamp().default(Date.now()),
   updatedAt: Joi.date().timestamp().default(null),
@@ -32,7 +32,7 @@ const createNew = async data => {
     const result = await getDB()
       .collection(travelCollectionName)
       .insertOne(value)
-    console.log(result)
+    return result
   } catch (error) {
     console.log(error)
   }
