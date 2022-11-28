@@ -7,7 +7,7 @@ const busStopCollectionSchema = Joi.object({
   codeBusRoute: Joi.string().required().trim(),
   nameBusStop: Joi.string().required().trim(),
   directionRoute: Joi.string().required().trim(),
-  travelTime: Joi.number().integer().min(0),
+  travelTime: Joi.number().min(0),
   location: Joi.object().keys({
     lng: Joi.string().required(),
     lat: Joi.string().required()
@@ -35,4 +35,16 @@ const createNew = async data => {
   }
 }
 
-export const BusStopModel = { createNew }
+const getFullBusStops = async () => {
+  try {
+    const result = await getDB()
+      .collection(busStopCollectionName)
+      .find()
+      .toArray()
+    return result || {}
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+export const BusStopModel = { createNew, getFullBusStops }

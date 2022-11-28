@@ -31,4 +31,16 @@ const createNew = async data => {
   }
 }
 
-export const roadRouteModel = { createNew }
+const getFullRoadRoutes = async () => {
+  try {
+    const result = await getDB()
+      .collection(roadRouteCollectionName)
+      .find()
+      .toArray()
+    return result || {}
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+export const roadRouteModel = { createNew, getFullRoadRoutes }

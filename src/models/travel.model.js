@@ -38,4 +38,16 @@ const createNew = async data => {
   }
 }
 
-export const TravelModel = { createNew }
+const getFullTravels = async () => {
+  try {
+    const result = await getDB()
+      .collection(travelCollectionName)
+      .find()
+      .toArray()
+    return result || {}
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+export const TravelModel = { createNew, getFullTravels }

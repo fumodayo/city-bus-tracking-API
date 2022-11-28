@@ -4,7 +4,7 @@ import { getDB } from '../config/mongodb'
 // Define Bus Routes collection
 const infoBusRoutesCollectionName = 'infobusroutes'
 const infoBusRoutesCollectionSchema = Joi.object({
-  ticketPrice: Joi.array().items(Joi.string()).trim(),
+  ticketPrice: Joi.array().items(Joi.string()),
   linkMonthlyTicket: Joi.string().trim(),
   linkOnline: Joi.string().trim(),
   busName: Joi.string().trim(),
@@ -33,4 +33,16 @@ const createNew = async data => {
   }
 }
 
-export const InfoBusRoutesModel = { createNew }
+const getFullInfoBusRoutes = async () => {
+  try {
+    const result = await getDB()
+      .collection(infoBusRoutesCollectionName)
+      .find()
+      .toArray()
+    return result || {}
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+export const InfoBusRoutesModel = { createNew, getFullInfoBusRoutes }

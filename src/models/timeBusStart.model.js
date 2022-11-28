@@ -30,4 +30,16 @@ const createNew = async data => {
   }
 }
 
-export const TimeBusStartModel = { createNew }
+const getFullTimeBusStart = async () => {
+  try {
+    const result = await getDB()
+      .collection(timeBusStartCollectionName)
+      .find()
+      .toArray()
+    return result || {}
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+export const TimeBusStartModel = { createNew, getFullTimeBusStart }
