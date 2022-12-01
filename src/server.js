@@ -20,7 +20,18 @@ const bootServer = () => {
     optionsSuccessStatus: 200
   }
 
-  app.use(cors(corsOptions))
+  app.use(cors(corsOptions), function (req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', '*')
+    res.setHeader(
+      'Access-Control-Allow-Headers',
+      'Access-Control-Allow-Headers, Content-Type, Authorization'
+    )
+    res.setHeader('Content-Range', 'application/json')
+    res.setHeader('Access-Control-Expose-Headers', 'Content-Range')
+    res.setHeader('Content-Range', 'busroutes 0-12/12')
+
+    next()
+  })
 
   // Enable req.body data
   app.use(express.json())

@@ -36,7 +36,10 @@ const createNew = async data => {
 
 const getFullBusRoutes = async () => {
   try {
-    const result = await getDB().collection(busRoutesCollectionName).find().toArray()
+    const result = await getDB()
+      .collection(busRoutesCollectionName)
+      .find()
+      .toArray()
     return result || {}
   } catch (error) {
     throw new Error(error)
