@@ -6,6 +6,7 @@ import { infoBusRoutesRoutes } from './infoBusRoutes.route'
 import { roadRoutesRoutes } from './roadroutes.route'
 import { timeBusStartRoutes } from './timeBusStart.route'
 import { travelsRoutes } from './travel.route'
+import { loginRoute } from './login.route'
 
 const router = express.Router()
 
@@ -35,5 +36,8 @@ router.use('/timebusstart', timeBusStartRoutes)
 
 /**Travels APIs*/
 router.use('/travels', travelsRoutes)
+
+/**Login */
+router.use('/login', loginRoute)
 
 export const apiV1 = router
