@@ -1,45 +1,48 @@
 import express from 'express'
+import mongoose from 'mongoose'
 import cors from 'cors'
-import { connectDB } from './config/mongodb'
-import { env } from '*/config/environment'
-import { apiV1 } from '*/routes/v1'
+import cookieParser from 'cookie-parser'
+import { envs } from './config/environment.js'
+import authRoutes from './routes/auth.js'
+import usersRoutes from './routes/user.js'
+import busrouteRoutes from './routes/busroutes.js'
+import busstopsRoutes from './routes/busstops.js'
+import travelsRoutes from './routes/travels.js'
+import timeStartRoutes from './routes/timestart.js'
+import infoBusRoutes from './routes/infobusroute.js'
+import roadBusRoutes from './routes/roadroutes.js'
 
-connectDB()
-  .then(() => console.log('Connected successfully to database server'))
-  .then(() => bootServer())
-  .catch(error => {
-    console.log(error)
-    process.exit(1)
+// Router import
+const app = express()
+
+// Connect mongodb
+mongoose
+  .set('strictQuery', false)
+  .connect(envs.MONGODB_URI)
+  .then(() => {
+    console.log('connected to db')
+  })
+  .catch(err => {
+    return err.message
   })
 
-const bootServer = () => {
-  const app = express()
+app.use(cors())
+app.use(cookieParser())
+app.use(express.json({ limit: '50mb' }))
 
-  const corsOptions = {
-    origin: 'http://localhost:3000',
-    optionsSuccessStatus: 200
-  }
+// ROUTES
+app.use('/v1/auth', authRoutes)
+app.use('/v1/user', usersRoutes)
 
-  app.use(cors(corsOptions), function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', '*')
-    res.setHeader(
-      'Access-Control-Allow-Headers',
-      'Access-Control-Allow-Headers, Content-Type, Authorization'
-    )
-    res.setHeader('Content-Range', 'application/json')
-    res.setHeader('Access-Control-Expose-Headers', 'Content-Range')
-    res.setHeader('Content-Range', 'busroutes 0-12/12')
+app.use('/v1/busroutes', busrouteRoutes)
+app.use('/v1/busstops', busstopsRoutes)
+app.use('/v1/travels', travelsRoutes)
+app.use('/v1/timebusstart', timeStartRoutes)
+app.use('/v1/infobusroute', infoBusRoutes)
+app.use('/v1/roadroutes', roadBusRoutes)
 
-    next()
-  })
+app.listen(8000, () => {
+  console.log('server running')
+})
 
-  // Enable req.body data
-  app.use(express.json())
-
-  // Use APIs v1
-  app.use('/v1', apiV1)
-
-  app.listen(env.APP_PORT, env.APP_HOST, () => {
-    console.log(`Hello ryo, i am running ${env.APP_PORT}`)
-  })
-}
+// JSON WEB TOKEN
